@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Quiz
 {
-    public class Pytanie
+    public class Odpowiedz
     {
-        public int Id { get; set; }
-        public int Kategoria { get; set; }
+        public int Numer { get; set; }
         public string Tresc { get; set; }
-        public List<Odpowiedz> Odpowiedzi { get; set; }
+        public bool CzyPoprawna { get; set; }
     }
 }
