@@ -12,29 +12,37 @@ var backend = new Backend();
 // wyświetlenie ekranu powitalnego
 Frontend.PokazEkranPowitalny();
 
-
-// wylosowanie pytania z aktualnej kategorii
-backend.WylosujPytanieZAktualnejKategorii();
-
-// wyświetlenie pytania wraz z odpowiedziami i pobranie odpowiedzi od gracza
-var odpowiedzGracza = Frontend.WyswietlAktualnePytanieIPobierzOdpowiedzGracza(backend.AktualnePytanie);
-
-var czyDobraOdpowiedz = backend.SprawdzOdpowiedzGracza(odpowiedzGracza);
-if (czyDobraOdpowiedz)
+while (true)
 {
-    Frontend.DobraOdpowiedz(backend.AktualnaKategoria);
+    // wylosowanie pytania z aktualnej kategorii
+    backend.WylosujPytanieZAktualnejKategorii();
+
+    // wyświetlenie pytania wraz z odpowiedziami i pobranie odpowiedzi od gracza
+    var odpowiedzGracza = Frontend.WyswietlAktualnePytanieIPobierzOdpowiedzGracza(backend.AktualnePytanie);
+
+    // walidacja odpowiedzi gracza
+    var czyDobraOdpowiedz = backend.SprawdzOdpowiedzGracza(odpowiedzGracza);
+    if (czyDobraOdpowiedz)
+    {
+        // sprawdzenie czy ostatnie pytanie
+        if (backend.CzyOstatniePytanie())
+        {
+            Frontend.UkonczonoQuiz();
+            break;
+        }
+        else
+        {
+            Frontend.DobraOdpowiedz(backend.AktualnaKategoria);
+            backend.PodniesKategorie();
+        }
+    }
+    else
+    {
+        Frontend.ZakonczGre();
+        break;
+    }
 }
-else
-{
-    Frontend.ZakonczGre();
-}
 
 
-
-Console.WriteLine();
-
-
-
-// walidacja odpowiedzi gracza (czy dobra czy zła)
 
 Console.ReadLine();

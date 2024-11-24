@@ -8,6 +8,8 @@ namespace Quiz
 {
     public static class Frontend
     {
+        private static List<string> akceptowaleKlawisze = ["1", "2", "3", "4"];
+
         public static void PokazEkranPowitalny()
         {
             Console.ForegroundColor = ConsoleColor.White;
@@ -24,21 +26,25 @@ namespace Quiz
 
         public static int WyswietlAktualnePytanieIPobierzOdpowiedzGracza(Pytanie pytanie)
         {
+            var odpowiedzGracza = WyswietlPytanie(pytanie);
+            while (!akceptowaleKlawisze.Contains(odpowiedzGracza))
+            {
+                odpowiedzGracza = WyswietlPytanie(pytanie);
+            }
+
+            return int.Parse(odpowiedzGracza);
+        }
+
+        public static void UkonczonoQuiz()
+        {
             Console.Clear();
             Console.WriteLine();
-            Console.WriteLine($" Pytanie za {pytanie.Kategoria} pkt.");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(" Brawo, to prawidłowa odpowiedź");
             Console.WriteLine();
-            Console.WriteLine($" {pytanie.Tresc}");
+            Console.WriteLine(" Udało Ci się ukończyć cały quiz.");
             Console.WriteLine();
-            foreach (var odpowiedz in pytanie.Odpowiedzi)
-            {
-                Console.WriteLine($" {odpowiedz.Numer}. {odpowiedz.Tresc}");
-            }
-            Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write(" Naciśnij 1, 2, 3 lub 4, aby wybrać odpowiedź ... ");
-            Console.ForegroundColor = ConsoleColor.White;
-            return int.Parse(Console.ReadLine());
+            Console.WriteLine(" GRATULACJE !!!");
         }
 
         public static void ZakonczGre()
@@ -63,6 +69,25 @@ namespace Quiz
             Console.Write(" Naciśnij ENTER, zobaczyć następne pytanie ... ");
             Console.ForegroundColor = ConsoleColor.White;
             Console.ReadLine();
+        }
+
+        private static string WyswietlPytanie(Pytanie pytanie)
+        {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine($" Pytanie za {pytanie.Kategoria} pkt.");
+            Console.WriteLine();
+            Console.WriteLine($" {pytanie.Tresc}");
+            Console.WriteLine();
+            foreach (var odpowiedz in pytanie.Odpowiedzi)
+            {
+                Console.WriteLine($" {odpowiedz.Id}. {odpowiedz.Tresc}");
+            }
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write(" Naciśnij 1, 2, 3 lub 4, aby wybrać odpowiedź ... ");
+            Console.ForegroundColor = ConsoleColor.White;
+            return Console.ReadLine();
         }
     }
 }

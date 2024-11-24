@@ -2,78 +2,57 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Quiz
 {
     public class Backend
     {
+        Random _random;
+
         public Backend()
-        {
+        {   
+            _random = new Random();
             UtworzListeWszystkichPytan();
-            AktualnaKategoria = 100;
+            Kategorie = ListaPytan!.Select(p => p.Kategoria).Distinct().OrderBy(p => p).ToList();
+            AktualnaKategoria = Kategorie[AktualnyIndeksKategorii];
         }
 
-
+        public int AktualnyIndeksKategorii { get; set; }
+        public List<int> Kategorie { get; set; }
         public List<Pytanie> ListaPytan { get; set; }
         public int AktualnaKategoria { get; set; }
         public Pytanie AktualnePytanie { get; set; }
 
         public void UtworzListeWszystkichPytan()
         {
-            ListaPytan = new List<Pytanie>();
-            var p1 = new Pytanie();
-            p1.Id = 1;
-            p1.Kategoria = 100;
-            p1.Tresc = "Jak miał na imię Einstein?";      
-            p1.Odpowiedzi = new List<Odpowiedz>();
-            
-            var o1 = new Odpowiedz();
-            o1.Numer = 1;
-            o1.Tresc = "Albert";
-            o1.CzyPoprawna = true;
-            p1.Odpowiedzi.Add(o1);
-
-            var o2 = new Odpowiedz();
-            o2.Numer = 2;
-            o2.Tresc = "Aaron";
-            p1.Odpowiedzi.Add(o2);
-
-            var o3 = new Odpowiedz();
-            o3.Numer = 3;
-            o3.Tresc = "Stefan";
-            p1.Odpowiedzi.Add(o3);
-
-            var o4 = new Odpowiedz();
-            o4.Numer = 4;
-            o4.Tresc = "Jarek";
-            p1.Odpowiedzi.Add(o4);
-
-            ListaPytan.Add(p1);
-
-
-            //Pytanie p2 = new Pytanie();
-            //p2.Id = 2;
-            //p2.Kategoria = 200;
-            //p2.Tresc = "Ile województw jest w Polsce?";
-            //p2.Odpowiedz_1 = "16";
-            //p2.Odpowiedz_2 = "25";
-            //p2.Odpowiedz_3 = "15";
-            //p2.Odpowiedz_4 = "49";
-            //ListaPytan.Add(p2);
+            var path = $"{Directory.GetCurrentDirectory()}\\questions_pl.json";
+            var text = File.ReadAllText(path);
+            var jso = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            ListaPytan = JsonSerializer.Deserialize<List<Pytanie>>(text, jso)!;
         }
 
         public void WylosujPytanieZAktualnejKategorii()
         {
-            // zasymulujemy sobie losowanie
-            AktualnePytanie = ListaPytan[0];
+            var pytaniaZAktualnejKategorii = ListaPytan.Where(p => p.Kategoria == AktualnaKategoria).ToList();
+            var index = _random.Next(0, pytaniaZAktualnejKategorii.Count);
+            var wylosowaniePytanie = pytaniaZAktualnejKategorii[index];
+            wylosowaniePytanie.Odpowiedzi = wylosowaniePytanie.Odpowiedzi.OrderBy(o => _random.Next()).ToList();
+
+            int id = 1;
+            foreach (var odpowiedz in wylosowaniePytanie.Odpowiedzi)
+            {
+                odpowiedz.Id = id;
+                id++;
+            }
+            AktualnePytanie = wylosowaniePytanie;
         }
 
         public bool SprawdzOdpowiedzGracza(int cyfraGracza)
         {
-            //var odpowiedzGracza = AktualnePytanie.Odpowiedzi[0];
             var odpowiedzGracza = AktualnePytanie.Odpowiedzi
-                .FirstOrDefault(o => o.Numer == cyfraGracza);
+                .FirstOrDefault(o => o.Id == cyfraGracza);
 
 
             if (odpowiedzGracza != null)
@@ -99,6 +78,24 @@ namespace Quiz
             //}
 
             //return rezultat;
+        }
+
+
+
+        public bool CzyOstatniePytanie()
+        {
+            int maksymalnyIndexKategorii = Kategorie.Count - 1;
+            if (AktualnyIndeksKategorii == maksymalnyIndexKategorii)
+                return true;
+            else
+                return false;
+        }
+
+
+        public void PodniesKategorie()
+        {
+            AktualnyIndeksKategorii++;
+            AktualnaKategoria = Kategorie[AktualnyIndeksKategorii];
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Quiz
 {
     public class Odpowiedz
     {
-        public int Numer { get; set; }
+        public int Id { get; set; }
         public string Tresc { get; set; }
         public bool CzyPoprawna { get; set; }
     }
