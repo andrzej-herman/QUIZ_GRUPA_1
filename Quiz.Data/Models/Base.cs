@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Quiz
+namespace Quiz.Data.Models
 {
-    public class Pytanie
+    public abstract class Base
     {
         public int Id { get; set; }
-        public int Kategoria { get; set; }
         public string Tresc { get; set; }
-        public List<Odpowiedz> Odpowiedzi { get; set; }
     }
 }

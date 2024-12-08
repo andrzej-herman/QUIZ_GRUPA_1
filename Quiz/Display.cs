@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Quiz.Data.Models;
 
 namespace Quiz
 {
-    public static class Frontend
+    public static class Display
     {
         private static List<string> akceptowaleKlawisze = ["1", "2", "3", "4"];
 

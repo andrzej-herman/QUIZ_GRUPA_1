@@ -1,34 +1,5 @@
 [
   {
-    "Id": 169,
-    "Kategoria": 300,
-    "Tresc": "Jednostka centralna komputera to?",
-    "Odpowiedzi": [
-      {
-        "Id": 1,
-        "Tresc": "procesor",
-        "CzyPoprawna": true
-      },
-      {
-        "Id": 2,
-        "Tresc": "karta graficzna",
-        "CzyPoprawna": false
-      },
-      {
-        "Id": 3,
-        "Tresc": "karta sieciowa",
-        "CzyPoprawna": false
-      },
-      {
-        "Id": 4,
-        "Tresc": "klawiatura",
-        "CzyPoprawna": false
-      }
-    ],
-    "Autor": "Dawid Karbowiak",
-    "Opis": null
-  },
-  {
     "Id": 1,
     "Kategoria": 100,
     "Tresc": "Jak miał na imię genialny fizyk Einstein?",
@@ -6866,6 +6837,35 @@
       {
         "Id": 4,
         "Tresc": "Nowy York",
+        "CzyPoprawna": false
+      }
+    ],
+    "Autor": "Dawid Karbowiak",
+    "Opis": null
+  },
+  {
+    "Id": 169,
+    "Kategoria": 300,
+    "Tresc": "Jednostka centralna komputera to?",
+    "Odpowiedzi": [
+      {
+        "Id": 1,
+        "Tresc": "procesor",
+        "CzyPoprawna": true
+      },
+      {
+        "Id": 2,
+        "Tresc": "karta graficzna",
+        "CzyPoprawna": false
+      },
+      {
+        "Id": 3,
+        "Tresc": "karta sieciowa",
+        "CzyPoprawna": false
+      },
+      {
+        "Id": 4,
+        "Tresc": "klawiatura",
         "CzyPoprawna": false
       }
     ],

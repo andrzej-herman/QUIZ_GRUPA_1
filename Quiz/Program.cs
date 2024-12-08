@@ -1,16 +1,16 @@
 ﻿using Quiz;
+using Quiz.Data;
 
-Test.Testuj();
 
 // powołanie do życia obiektu backend
-var backend = new Backend();
+var backend = new GameService();
 
 
 // tworzenie listy wszystkich pytań => w konstruktorze
 // ustawianie kategorii na najniższą => w konstruktorze
 
 // wyświetlenie ekranu powitalnego
-Frontend.PokazEkranPowitalny();
+Display.PokazEkranPowitalny();
 
 while (true)
 {
@@ -18,7 +18,7 @@ while (true)
     backend.WylosujPytanieZAktualnejKategorii();
 
     // wyświetlenie pytania wraz z odpowiedziami i pobranie odpowiedzi od gracza
-    var odpowiedzGracza = Frontend.WyswietlAktualnePytanieIPobierzOdpowiedzGracza(backend.AktualnePytanie);
+    var odpowiedzGracza = Display.WyswietlAktualnePytanieIPobierzOdpowiedzGracza(backend.AktualnePytanie);
 
     // walidacja odpowiedzi gracza
     var czyDobraOdpowiedz = backend.SprawdzOdpowiedzGracza(odpowiedzGracza);
@@ -27,18 +27,18 @@ while (true)
         // sprawdzenie czy ostatnie pytanie
         if (backend.CzyOstatniePytanie())
         {
-            Frontend.UkonczonoQuiz();
+            Display.UkonczonoQuiz();
             break;
         }
         else
         {
-            Frontend.DobraOdpowiedz(backend.AktualnaKategoria);
+            Display.DobraOdpowiedz(backend.AktualnaKategoria);
             backend.PodniesKategorie();
         }
     }
     else
     {
-        Frontend.ZakonczGre();
+        Display.ZakonczGre();
         break;
     }
 }

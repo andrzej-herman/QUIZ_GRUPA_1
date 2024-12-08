@@ -1,41 +1,34 @@
-﻿using System;
+﻿using Quiz.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Quiz
+namespace Quiz.Data
 {
-    public class Backend
+    public class GameService
     {
-        Random _random;
+        private Random _random;
+        private List<Pytanie> _listaPytan;
+        private List<int> _kategorie;
+        private int _aktualnyIndeksKategorii;
 
-        public Backend()
-        {   
+        public GameService()
+        {
             _random = new Random();
             UtworzListeWszystkichPytan();
-            Kategorie = ListaPytan!.Select(p => p.Kategoria).Distinct().OrderBy(p => p).ToList();
-            AktualnaKategoria = Kategorie[AktualnyIndeksKategorii];
+            PobierzKategorie();
+            AktualnaKategoria = _kategorie![_aktualnyIndeksKategorii];
         }
 
-        public int AktualnyIndeksKategorii { get; set; }
-        public List<int> Kategorie { get; set; }
-        public List<Pytanie> ListaPytan { get; set; }
         public int AktualnaKategoria { get; set; }
         public Pytanie AktualnePytanie { get; set; }
 
-        public void UtworzListeWszystkichPytan()
-        {
-            var path = $"{Directory.GetCurrentDirectory()}\\questions_pl.json";
-            var text = File.ReadAllText(path);
-            var jso = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            ListaPytan = JsonSerializer.Deserialize<List<Pytanie>>(text, jso)!;
-        }
-
         public void WylosujPytanieZAktualnejKategorii()
         {
-            var pytaniaZAktualnejKategorii = ListaPytan.Where(p => p.Kategoria == AktualnaKategoria).ToList();
+            var pytaniaZAktualnejKategorii = _listaPytan.Where(p => p.Kategoria == AktualnaKategoria).ToList();
             var index = _random.Next(0, pytaniaZAktualnejKategorii.Count);
             var wylosowaniePytanie = pytaniaZAktualnejKategorii[index];
             wylosowaniePytanie.Odpowiedzi = wylosowaniePytanie.Odpowiedzi.OrderBy(o => _random.Next()).ToList();
@@ -80,22 +73,34 @@ namespace Quiz
             //return rezultat;
         }
 
-
-
         public bool CzyOstatniePytanie()
         {
-            int maksymalnyIndexKategorii = Kategorie.Count - 1;
-            if (AktualnyIndeksKategorii == maksymalnyIndexKategorii)
+            int maksymalnyIndexKategorii = _kategorie.Count - 1;
+            if (_aktualnyIndeksKategorii == maksymalnyIndexKategorii)
                 return true;
             else
                 return false;
         }
 
-
         public void PodniesKategorie()
         {
-            AktualnyIndeksKategorii++;
-            AktualnaKategoria = Kategorie[AktualnyIndeksKategorii];
+            _aktualnyIndeksKategorii++;
+            AktualnaKategoria = _kategorie[_aktualnyIndeksKategorii];
         }
+
+
+        private void UtworzListeWszystkichPytan()
+        {
+            var path = $"{Directory.GetCurrentDirectory()}\\questions_pl.json";
+            var text = File.ReadAllText(path);
+            var jso = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            _listaPytan = JsonSerializer.Deserialize<List<Pytanie>>(text, jso)!;
+        }
+
+        private void PobierzKategorie()
+        {
+            _kategorie = _listaPytan!.Select(p => p.Kategoria).Distinct().OrderBy(p => p).ToList();
+        }
+
     }
 }

@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <ApplicationIcon>Hopstarter-3d-Cartoon-Vol2-Help-And-Support.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Hopstarter-3d-Cartoon-Vol2-Help-And-Support.ico" />
+    <None Remove="questions_pl.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Quiz.Data\Quiz.Data.csproj" />
+    <Content Include="questions_pl.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
